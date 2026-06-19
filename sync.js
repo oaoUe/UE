@@ -18,10 +18,14 @@ const GHSync = (() => {
   }
 
   async function pull() {
+    const token = pat();
     try {
-      const res = await fetch(RAW + '?_=' + Date.now());
-      if (!res.ok) return false;
-      const d = await res.json();
+      const headers = token ? { Authorization: 'token ' + token } : {};
+      const r = await fetch(API + '?_=' + Date.now(), { headers });
+      if (!r.ok) return false;
+      const j = await r.json();
+      const text = decodeURIComponent(escape(atob(j.content.replace(/\n/g, ''))));
+      const d = JSON.parse(text);
       if (Array.isArray(d.scores)) localStorage.setItem('toeic_scores', JSON.stringify(d.scores));
       if (d.answers) {
         for (let t = 1; t <= 6; t++) {
