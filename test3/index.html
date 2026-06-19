@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>多益聽力刷題 · TEST 3</title>
+<style>
+  :root{--bg:#f4f5f7;--card:#fff;--line:#e3e6ea;--ink:#1b1f24;--muted:#6b7280;
+    --brand:#2563eb;--ok:#16a34a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Segoe UI","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+    padding:32px 14px}
+  .wrap{max-width:560px;margin:0 auto}
+  .head{margin:0 0 6px;font-size:22px}
+  .sub{color:var(--muted);font-size:14px;margin:0 0 22px}
+  .grid{display:flex;flex-direction:column;gap:14px}
+  a.row{display:flex;align-items:center;justify-content:space-between;text-decoration:none;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;
+    color:var(--ink);box-shadow:0 4px 16px rgba(20,30,50,.05);transition:.15s}
+  a.row:hover{border-color:var(--brand);transform:translateY(-1px)}
+  .row.off{pointer-events:none;opacity:.55}
+  .left .t{font-size:16px;font-weight:700}
+  .left .d{font-size:13px;color:var(--muted);margin-top:3px}
+  .badge{font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px}
+  .badge.ready{background:#e9f9ef;color:var(--ok)}
+  .badge.soon{background:#eef0f3;color:var(--muted)}
+
+  a.row.all{border-color:var(--brand);background:var(--brand-light,#eff6ff)}
+  a.row.all:hover{background:var(--brand);color:#fff}
+  a.row.all:hover .badge-all{background:rgba(255,255,255,.25);color:#fff}
+  a.row.all:hover .d{color:rgba(255,255,255,.8)}
+  .badge-all{background:#2563eb;color:#fff}
+  .foot{margin-top:24px;font-size:12px;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 class="head">新制多益 · TEST 3 聽力</h1>
+  <p class="sub">共 100 題 · 點選 Part 開始刷題，作答即時批改並計分</p>
+  <div class="grid">
+    <a class="row all" href="part1.html">
+      <span class="left"><span class="t">▶ 全部　Part 1–4</span><span class="d">Q1–100 · 依序作答，完成一 Part 自動出現下一 Part 連結</span></span>
+      <span class="badge badge-all">全部</span>
+    </a>
+    <a class="row" href="part1.html">
+      <span class="left"><span class="t">Part 1　照片描述</span><span class="d">Q1–6 · 看圖選答（A–D）</span></span>
+      <span class="badge ready">可作答</span>
+    </a>
+    <a class="row" href="part2.html">
+      <span class="left"><span class="t">Part 2　應答問題</span><span class="d">Q7–31 · 純音檔（A–C）</span></span>
+      <span class="badge ready">可作答</span>
+    </a>
+    <a class="row" href="part3.html">
+      <span class="left"><span class="t">Part 3　簡短對話</span><span class="d">Q32–70 · 含題目與選項文字（A–D）</span></span>
+      <span class="badge ready">可作答</span>
+    </a>
+    <a class="row" href="part4.html">
+      <span class="left"><span class="t">Part 4　簡短獨白</span><span class="d">Q71–100 · 含題目與選項文字（A–D）</span></span>
+      <span class="badge ready">可作答</span>
+    </a>
+  </div>
+  <p class="foot">素材僅供個人學習，請勿公開散布</p>
+</div>
+</body>
+</html>

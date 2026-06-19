@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新制多益 TOEIC 聽力刷題</title>
+<style>
+  :root{
+    --bg:#f0f2f5;--card:#fff;--line:#e3e6ea;--ink:#1b1f24;--muted:#6b7280;
+    --brand:#2563eb;--brand-light:#eff6ff;--ok:#16a34a;--ok-light:#e9f9ef;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);
+    font-family:"Segoe UI","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+    min-height:100vh}
+
+  /* ── Header ── */
+  .hero{background:linear-gradient(135deg,#1d4ed8 0%,#2563eb 60%,#3b82f6 100%);
+    color:#fff;padding:48px 20px 40px;text-align:center}
+  .hero h1{font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:-.5px;margin-bottom:10px}
+  .hero p{font-size:15px;opacity:.85;max-width:480px;margin:0 auto 22px;line-height:1.6}
+  .stats{display:inline-flex;gap:28px;background:rgba(255,255,255,.15);
+    border-radius:999px;padding:10px 26px;font-size:13px;font-weight:600}
+  .stats span{display:flex;align-items:center;gap:6px}
+  .stats .dot{width:8px;height:8px;border-radius:50%;background:#4ade80}
+
+  /* ── Grid ── */
+  .main{max-width:900px;margin:0 auto;padding:32px 16px 48px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+
+  /* ── Test Card ── */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;box-shadow:0 2px 12px rgba(20,30,50,.06);transition:.18s}
+  .card:hover{box-shadow:0 6px 24px rgba(20,30,50,.12);transform:translateY(-2px)}
+
+  .card-head{display:flex;align-items:center;justify-content:space-between;
+    padding:18px 20px 14px;border-bottom:1px solid var(--line)}
+  .card-head a{text-decoration:none;color:inherit}
+  .card-head a:hover .test-label{color:var(--brand)}
+  .test-num{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.8px;
+    text-transform:uppercase;margin-bottom:3px}
+  .test-label{font-size:19px;font-weight:800;transition:.12s}
+  .badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;
+    background:var(--ok-light);color:var(--ok)}
+
+  .parts{padding:10px 20px 16px;display:flex;flex-direction:column;gap:4px}
+  .part-row{display:flex;align-items:center;justify-content:space-between;
+    text-decoration:none;color:var(--ink);padding:8px 10px;border-radius:10px;
+    transition:.12s;gap:8px}
+  .part-row:hover{background:var(--brand-light);color:var(--brand)}
+  .part-row:hover .part-arrow{opacity:1}
+  .part-name{font-size:14px;font-weight:600;white-space:nowrap}
+  .part-desc{font-size:12px;color:var(--muted);flex:1;padding:0 8px}
+  .part-row:hover .part-desc{color:var(--brand);opacity:.75}
+  .part-arrow{font-size:13px;opacity:.3;transition:.12s;color:var(--brand)}
+  .part-row.all-parts{background:var(--brand-light);font-weight:700;color:var(--brand);border-radius:10px}
+  .part-row.all-parts:hover{background:var(--brand);color:#fff}
+  .part-row.all-parts .part-arrow{opacity:1}
+
+  /* ── 完整入口 ── */
+  .full-card{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%);
+    border-radius:var(--radius);padding:28px 32px;color:#fff;margin-bottom:24px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+    text-decoration:none;transition:.18s;box-shadow:0 4px 20px rgba(37,99,235,.35)}
+  .full-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(37,99,235,.45)}
+  .full-card .fc-left .fc-title{font-size:20px;font-weight:800;margin-bottom:6px}
+  .full-card .fc-left .fc-desc{font-size:13px;opacity:.82;line-height:1.5}
+  .full-card .fc-badge{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;padding:8px 20px;font-size:13px;font-weight:700;white-space:nowrap}
+  /* ── Footer ── */
+  .foot{text-align:center;font-size:12px;color:var(--muted);padding-bottom:32px}
+
+  @media(max-width:600px){
+    .grid{grid-template-columns:1fr}
+    .hero{padding:32px 14px 28px}
+    .hero p{font-size:14px}
+    .stats{gap:14px;padding:8px 16px;flex-wrap:wrap;justify-content:center}
+    .main{padding:20px 12px 40px}
+  }
+  @media(max-width:360px){
+    .stats span:last-child{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>新制多益 TOEIC 聽力刷題</h1>
+  <p>6 回模擬試題，共 600 題。點選任一 Part 即可開始作答，即時批改並顯示中英對照解析。</p>
+  <div class="stats">
+    <span><span class="dot"></span>6 回全部可作答</span>
+    <span>600 題</span>
+    <span>Part 1–4</span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="grid">
+
+    <!-- TEST 1 -->
+    <div class="card">
+      <div class="card-head">
+        <a href="test1/index.html">
+          <div class="test-num">TEST</div>
+          <div class="test-label">1</div>
+        </a>
+        <span class="badge">可作答</span>
+      </div>
+      <div class="parts">
+        <a class="part-row all-parts" href="test1/part1.html">
+          <span class="part-name">▶ 全部　Part 1–4</span>
+          <span class="part-desc">Q1–100</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test1/part1.html">
+          <span class="part-name">Part 1　照片描述</span>
+          <span class="part-desc">Q1–6</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test1/part2.html">
+          <span class="part-name">Part 2　應答問題</span>
+          <span class="part-desc">Q7–31</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test1/part3.html">
+          <span class="part-name">Part 3　簡短對話</span>
+          <span class="part-desc">Q32–70</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test1/part4.html">
+          <span class="part-name">Part 4　簡短獨白</span>
+          <span class="part-desc">Q71–100</span>
+          <span class="part-arrow">›</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- TEST 2 -->
+    <div class="card">
+      <div class="card-head">
+        <a href="test2/index.html">
+          <div class="test-num">TEST</div>
+          <div class="test-label">2</div>
+        </a>
+        <span class="badge">可作答</span>
+      </div>
+      <div class="parts">
+        <a class="part-row all-parts" href="test2/part1.html">
+          <span class="part-name">▶ 全部　Part 1–4</span>
+          <span class="part-desc">Q1–100</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test2/part1.html">
+          <span class="part-name">Part 1　照片描述</span>
+          <span class="part-desc">Q1–6</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test2/part2.html">
+          <span class="part-name">Part 2　應答問題</span>
+          <span class="part-desc">Q7–31</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test2/part3.html">
+          <span class="part-name">Part 3　簡短對話</span>
+          <span class="part-desc">Q32–70</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test2/part4.html">
+          <span class="part-name">Part 4　簡短獨白</span>
+          <span class="part-desc">Q71–100</span>
+          <span class="part-arrow">›</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- TEST 3 -->
+    <div class="card">
+      <div class="card-head">
+        <a href="test3/index.html">
+          <div class="test-num">TEST</div>
+          <div class="test-label">3</div>
+        </a>
+        <span class="badge">可作答</span>
+      </div>
+      <div class="parts">
+        <a class="part-row all-parts" href="test3/part1.html">
+          <span class="part-name">▶ 全部　Part 1–4</span>
+          <span class="part-desc">Q1–100</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test3/part1.html">
+          <span class="part-name">Part 1　照片描述</span>
+          <span class="part-desc">Q1–6</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test3/part2.html">
+          <span class="part-name">Part 2　應答問題</span>
+          <span class="part-desc">Q7–31</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test3/part3.html">
+          <span class="part-name">Part 3　簡短對話</span>
+          <span class="part-desc">Q32–70</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test3/part4.html">
+          <span class="part-name">Part 4　簡短獨白</span>
+          <span class="part-desc">Q71–100</span>
+          <span class="part-arrow">›</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- TEST 4 -->
+    <div class="card">
+      <div class="card-head">
+        <a href="test4/index.html">
+          <div class="test-num">TEST</div>
+          <div class="test-label">4</div>
+        </a>
+        <span class="badge">可作答</span>
+      </div>
+      <div class="parts">
+        <a class="part-row all-parts" href="test4/part1.html">
+          <span class="part-name">▶ 全部　Part 1–4</span>
+          <span class="part-desc">Q1–100</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test4/part1.html">
+          <span class="part-name">Part 1　照片描述</span>
+          <span class="part-desc">Q1–6</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test4/part2.html">
+          <span class="part-name">Part 2　應答問題</span>
+          <span class="part-desc">Q7–31</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test4/part3.html">
+          <span class="part-name">Part 3　簡短對話</span>
+          <span class="part-desc">Q32–70</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test4/part4.html">
+          <span class="part-name">Part 4　簡短獨白</span>
+          <span class="part-desc">Q71–100</span>
+          <span class="part-arrow">›</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- TEST 5 -->
+    <div class="card">
+      <div class="card-head">
+        <a href="test5/index.html">
+          <div class="test-num">TEST</div>
+          <div class="test-label">5</div>
+        </a>
+        <span class="badge">可作答</span>
+      </div>
+      <div class="parts">
+        <a class="part-row all-parts" href="test5/part1.html">
+          <span class="part-name">▶ 全部　Part 1–4</span>
+          <span class="part-desc">Q1–100</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test5/part1.html">
+          <span class="part-name">Part 1　照片描述</span>
+          <span class="part-desc">Q1–6</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test5/part2.html">
+          <span class="part-name">Part 2　應答問題</span>
+          <span class="part-desc">Q7–31</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test5/part3.html">
+          <span class="part-name">Part 3　簡短對話</span>
+          <span class="part-desc">Q32–70</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test5/part4.html">
+          <span class="part-name">Part 4　簡短獨白</span>
+          <span class="part-desc">Q71–100</span>
+          <span class="part-arrow">›</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- TEST 6 -->
+    <div class="card">
+      <div class="card-head">
+        <a href="test6/index.html">
+          <div class="test-num">TEST</div>
+          <div class="test-label">6</div>
+        </a>
+        <span class="badge">可作答</span>
+      </div>
+      <div class="parts">
+        <a class="part-row all-parts" href="test6/part1.html">
+          <span class="part-name">▶ 全部　Part 1–4</span>
+          <span class="part-desc">Q1–100</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test6/part1.html">
+          <span class="part-name">Part 1　照片描述</span>
+          <span class="part-desc">Q1–6</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test6/part2.html">
+          <span class="part-name">Part 2　應答問題</span>
+          <span class="part-desc">Q7–31</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test6/part3.html">
+          <span class="part-name">Part 3　簡短對話</span>
+          <span class="part-desc">Q32–70</span>
+          <span class="part-arrow">›</span>
+        </a>
+        <a class="part-row" href="test6/part4.html">
+          <span class="part-name">Part 4　簡短獨白</span>
+          <span class="part-desc">Q71–100</span>
+          <span class="part-arrow">›</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="main" id="historySection" style="padding-top:0">
+  <div id="historyWrap"></div>
+  <!-- GitHub 同步 -->
+  <div style="background:#fff;border:1px solid #e3e6ea;border-radius:16px;overflow:hidden;
+    box-shadow:0 2px 12px rgba(20,30,50,.06);margin-bottom:24px">
+    <div style="padding:14px 20px;border-bottom:1px solid #e3e6ea;display:flex;align-items:center;gap:10px">
+      <span style="font-size:15px;font-weight:700">☁ GitHub 同步</span>
+      <span style="font-size:12px;color:#6b7280">跨設備共享作答紀錄 · oaoUe/UE</span>
+    </div>
+    <div style="padding:16px 20px 20px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <label style="font-size:13px;font-weight:600;white-space:nowrap">Personal Access Token</label>
+        <input id="ghPat" type="password" placeholder="github_pat_..."
+          style="flex:1;min-width:0;padding:6px 10px;border:1px solid #e3e6ea;border-radius:8px;
+          font-size:13px;font-family:monospace">
+        <button onclick="savePAT()" style="font-size:13px;padding:6px 14px;border-radius:8px;
+          cursor:pointer;font-weight:700;border:1px solid #2563eb;color:#2563eb;
+          background:#eff6ff;white-space:nowrap">儲存</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button onclick="doPull()" style="font-size:13px;padding:7px 18px;border-radius:9px;cursor:pointer;
+          font-weight:700;border:1px solid #e3e6ea;color:#1b1f24;background:#fff">↓ 從 GitHub 拉取</button>
+        <button onclick="doPush()" style="font-size:13px;padding:7px 18px;border-radius:9px;cursor:pointer;
+          font-weight:700;border:1px solid #e3e6ea;color:#1b1f24;background:#fff">↑ 推送到 GitHub</button>
+        <span id="syncMsg" style="font-size:12px;display:none"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 計時設定 -->
+  <div style="background:#fff;border:1px solid #e3e6ea;border-radius:16px;overflow:hidden;
+    box-shadow:0 2px 12px rgba(20,30,50,.06);margin-bottom:24px">
+    <div style="padding:14px 20px;border-bottom:1px solid #e3e6ea;display:flex;align-items:center;gap:10px">
+      <span style="font-size:15px;font-weight:700">⏱ 計時設定</span>
+      <span style="font-size:12px;color:#6b7280">依照真正多益時間分配；設為 0 可關閉該 Part 倒數</span>
+    </div>
+    <div style="padding:16px 20px 20px">
+      <div id="timerCfg" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px 24px;margin-bottom:16px"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button onclick="saveTimerCfg()" id="timerSaveBtn"
+          style="font-size:13px;padding:7px 18px;border-radius:9px;cursor:pointer;font-weight:700;
+          border:1px solid #2563eb;color:#2563eb;background:#eff6ff">儲存設定</button>
+        <button onclick="resetTimerCfg()"
+          style="font-size:13px;padding:7px 18px;border-radius:9px;cursor:pointer;font-weight:600;
+          border:1px solid #e3e6ea;color:#6b7280;background:#fff">恢復預設</button>
+        <span id="timerSaveMsg" style="font-size:12px;color:#16a34a;align-self:center;display:none">已儲存</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 重設作答紀錄 -->
+  <div style="background:#fff;border:1px solid #e3e6ea;border-radius:16px;overflow:hidden;
+    box-shadow:0 2px 12px rgba(20,30,50,.06);margin-bottom:24px">
+    <div style="padding:14px 20px;border-bottom:1px solid #e3e6ea;display:flex;align-items:center;gap:10px">
+      <span style="font-size:15px;font-weight:700">⚙ 重設作答紀錄</span>
+      <span style="font-size:12px;color:#6b7280">清除後無法復原</span>
+    </div>
+    <div id="resetWrap" style="padding:14px 20px;display:flex;flex-wrap:wrap;gap:8px"></div>
+  </div>
+</div>
+
+<p class="foot">素材僅供個人學習，請勿公開散布</p>
+
+<script src="sync.js"></script>
+<script src="tracker.js"></script>
+<script>
+/* ── GitHub 同步 ── */
+(function(){
+  const saved = localStorage.getItem('gh_pat');
+  if (saved) document.getElementById('ghPat').value = saved;
+
+  function showMsg(msg, color) {
+    const el = document.getElementById('syncMsg');
+    el.textContent = msg; el.style.color = color; el.style.display = 'inline';
+    setTimeout(() => { el.style.display = 'none'; }, 3500);
+  }
+
+  window.savePAT = function() {
+    localStorage.setItem('gh_pat', document.getElementById('ghPat').value.trim());
+    showMsg('✓ 已儲存', '#16a34a');
+  };
+
+  window.doPull = async function() {
+    showMsg('拉取中…', '#6b7280');
+    const ok = await GHSync.pull();
+    if (ok) {
+      showMsg('✓ 拉取成功，紀錄已更新', '#16a34a');
+      render(); renderReset();
+    } else {
+      showMsg('✗ 拉取失敗（檔案尚未建立或網路錯誤）', '#dc2626');
+    }
+  };
+
+  window.doPush = async function() {
+    if (!localStorage.getItem('gh_pat')) { showMsg('請先輸入並儲存 PAT', '#dc2626'); return; }
+    showMsg('推送中…', '#6b7280');
+    const ok = await GHSync.push();
+    showMsg(ok ? '✓ 推送成功' : '✗ 推送失敗（請確認 PAT 是否有 repo 權限）', ok ? '#16a34a' : '#dc2626');
+  };
+
+  if (saved) doPull();
+})();
+</script>
+
+<script>
+/* ── 計時設定 ── */
+(function(){
+  const DEFAULTS = [0, 300, 480, 1020, 840];
+  const PART_NAMES = ['', '照片描述', '應答問題', '簡短對話', '簡短獨白'];
+
+  function getCfg() {
+    let cfg; try { cfg = JSON.parse(localStorage.getItem('toeic_timer')||'null'); } catch { cfg = null; }
+    return (Array.isArray(cfg) && cfg.length >= 5) ? cfg : DEFAULTS.slice();
+  }
+
+  function renderTimerCfg() {
+    const cur = getCfg();
+    document.getElementById('timerCfg').innerHTML = [1,2,3,4].map(p => `
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:13px;font-weight:600;min-width:90px">Part ${p}　${PART_NAMES[p]}</span>
+        <input id="tcfg${p}" type="number" min="0" max="99" value="${Math.round(cur[p]/60)}"
+          style="width:54px;padding:5px 8px;border:1px solid #e3e6ea;border-radius:8px;
+          font-size:14px;text-align:center;font-weight:700;color:#1b1f24">
+        <span style="font-size:12px;color:#6b7280">分鐘</span>
+      </div>`).join('');
+  }
+
+  window.saveTimerCfg = function() {
+    const cfg = [0,1,2,3,4].map(p => p===0 ? 0 : Math.max(0, (+document.getElementById('tcfg'+p).value||0)) * 60);
+    localStorage.setItem('toeic_timer', JSON.stringify(cfg));
+    const msg = document.getElementById('timerSaveMsg');
+    msg.style.display = 'inline';
+    setTimeout(() => { msg.style.display = 'none'; }, 2000);
+  };
+
+  window.resetTimerCfg = function() {
+    localStorage.removeItem('toeic_timer');
+    renderTimerCfg();
+  };
+
+  renderTimerCfg();
+})();
+</script>
+
+<script>
+(function(){
+  const PARTS = {1:'照片',2:'應答',3:'對話',4:'獨白'};
+  const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+  const pct  = (c,t) => Math.round(c/t*100);
+
+  function render(){
+    const scores = Tracker.load();
+    const wrap = document.getElementById('historyWrap');
+    if(!scores.length){ wrap.innerHTML=''; return; }
+
+    // latest record per test+part
+    const latest = {};
+    scores.forEach(r=>{
+      const k = `t${r.test}p${r.part}`;
+      latest[k] = r;
+    });
+
+    let rows = '';
+    for(let t=1;t<=6;t++){
+      for(let p=1;p<=4;p++){
+        const r = latest[`t${t}p${p}`];
+        if(!r) continue;
+        const pv = pct(r.correct, r.total);
+        const color = pv>=80?'#16a34a':pv>=60?'#d97706':'#dc2626';
+        const d = new Date(r.date);
+        const ds = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+        rows += `<tr>
+          <td>TEST ${r.test}</td>
+          <td>Part ${r.part}　${PARTS[r.part]||''}</td>
+          <td style="font-weight:700;color:${color}">${r.correct} / ${r.total}　${pv}%</td>
+          <td>${fmt(r.time)}</td>
+          <td style="color:#6b7280;font-size:12px">${ds}</td>
+        </tr>`;
+      }
+    }
+
+    wrap.innerHTML = `
+    <div style="background:#fff;border:1px solid #e3e6ea;border-radius:16px;overflow:hidden;
+      box-shadow:0 2px 12px rgba(20,30,50,.06);margin-bottom:24px">
+      <div style="display:flex;align-items:center;justify-content:space-between;
+        padding:16px 20px;border-bottom:1px solid #e3e6ea">
+        <span style="font-size:15px;font-weight:700">成績紀錄</span>
+        <button onclick="exportJSON()" style="font-size:12px;padding:5px 12px;border:1px solid #e3e6ea;
+          border-radius:8px;background:#fff;cursor:pointer;font-weight:600">匯出 JSON</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead>
+            <tr style="background:#f8f9fb;color:#6b7280;font-size:12px">
+              <th style="padding:9px 16px;text-align:left;font-weight:600">回次</th>
+              <th style="padding:9px 16px;text-align:left;font-weight:600">Part</th>
+              <th style="padding:9px 16px;text-align:left;font-weight:600">得分</th>
+              <th style="padding:9px 16px;text-align:left;font-weight:600">用時</th>
+              <th style="padding:9px 16px;text-align:left;font-weight:600">日期</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+
+    wrap.querySelectorAll('tbody tr').forEach(tr=>{
+      tr.style.borderTop='1px solid #f0f2f5';
+      tr.querySelectorAll('td').forEach(td=>{ td.style.padding='10px 16px'; });
+    });
+  }
+
+  window.exportJSON = function(){
+    const data = JSON.stringify(Tracker.load(), null, 2);
+    const a = document.createElement('a');
+    a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(data);
+    a.download = 'toeic_scores.json';
+    a.click();
+  };
+
+  window.clearAll = function(){
+    if(!confirm('確定要清除所有成績紀錄？')) return;
+    Tracker.clear();
+    render();
+  };
+
+  window.clearTest = function(n){
+    if(!confirm(`確定要清除 TEST ${n} 的所有作答紀錄與成績？`)) return;
+    Tracker.clearTestAnss(n);
+    Tracker.clearTestScores(n);
+    render();
+    renderReset();
+  };
+
+  function renderReset(){
+    const wrap = document.getElementById('resetWrap');
+    let btns = '';
+    for(let t=1;t<=6;t++){
+      const ans = Tracker.loadAnss(t);
+      const scores = Tracker.load().filter(r=>r.test===t);
+      const hasData = Object.keys(ans).length>0 || scores.length>0;
+      const style = hasData
+        ? 'border:1px solid #fca5a5;color:#dc2626;background:#fff'
+        : 'border:1px solid #e3e6ea;color:#9ca3af;background:#f9fafb;cursor:not-allowed';
+      btns += `<button onclick="if(${hasData}) clearTest(${t})" style="font-size:13px;padding:7px 16px;border-radius:9px;cursor:pointer;font-weight:600;${style}">TEST ${t}</button>`;
+    }
+    wrap.innerHTML = btns
+      + `<button onclick="clearAll()" style="font-size:13px;padding:7px 16px;border-radius:9px;cursor:pointer;font-weight:700;border:1px solid #fca5a5;color:#dc2626;background:#fff;margin-left:8px">清除全部</button>`;
+  }
+
+  render();
+  renderReset();
+  window.addEventListener('focus', ()=>{ render(); renderReset(); });
+})();
+</script>
+
+</body>
+</html>

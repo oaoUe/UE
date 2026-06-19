@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>多益聽力刷題 · TEST 4 · Part 1</title>
+<style>
+  :root{--bg:#f4f5f7;--card:#fff;--line:#e3e6ea;--ink:#1b1f24;--muted:#6b7280;
+    --brand:#2563eb;--ok:#16a34a;--bad:#dc2626}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Segoe UI","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;padding:24px 14px}
+  .wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+  .topbar{position:sticky;top:0;z-index:5;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;
+    box-shadow:0 4px 16px rgba(20,30,50,.06)}
+  .topbar h1{font-size:15px;margin:0}
+  .topbar .score{font-size:14px;font-weight:700;color:var(--brand)}
+  .nav{font-size:12px}.nav a{color:var(--muted);text-decoration:none;margin-left:10px}
+  .nav a:hover{color:var(--brand)}
+  .home{font-size:13px;font-weight:700;color:var(--brand);text-decoration:none;
+    padding:5px 11px;border-radius:8px;background:#eff6ff;white-space:nowrap;transition:.12s}
+  .home:hover{background:var(--brand);color:#fff}
+  .next-btn{display:block;text-align:center;text-decoration:none;
+    background:var(--brand);color:#fff;border-radius:12px;padding:13px 0;
+    font-size:14px;font-weight:700;transition:.12s}
+  .next-btn:hover{background:#1d4ed8}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;
+    box-shadow:0 6px 24px rgba(20,30,50,.06)}
+  .body{padding:18px 20px 20px}
+  .qno{font-size:13px;color:var(--muted);margin:0 0 10px;font-weight:600}
+  .photo{width:100%;border-radius:12px;border:1px solid var(--line);display:block}
+  .audio{width:100%;margin:14px 0 4px}
+  .hint{font-size:12px;color:var(--muted);margin:0 0 14px;text-align:center}
+  .opts{display:grid;gap:10px;grid-template-columns:repeat(4,1fr)}
+  .opt{appearance:none;border:1.5px solid var(--line);background:#fff;color:var(--ink);
+    font-size:18px;font-weight:600;padding:14px 0;border-radius:12px;cursor:pointer;transition:.15s}
+  .opt:hover{border-color:var(--brand);color:var(--brand)}
+  .opt.correct{border-color:var(--ok);background:#e9f9ef;color:var(--ok)}
+  .opt.wrong{border-color:var(--bad);background:#fdeaea;color:var(--bad)}
+  .opt:disabled{cursor:default}
+  .result{margin:14px 0 0;font-size:14px;text-align:center;min-height:18px;font-weight:600}
+  .result.ok{color:var(--ok)}.result.bad{color:var(--bad)}
+  .reveal{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;display:none}
+  .reveal.show{display:block}
+  .ro{display:flex;gap:10px;padding:8px 10px;border-radius:10px;font-size:14px;line-height:1.5}
+  .ro+.ro{margin-top:6px}
+  .ro .k{font-weight:700;flex:0 0 20px}
+  .ro .tx .en{color:var(--ink)}
+  .ro .tx .zh{color:var(--muted);font-size:13px;margin-top:2px}
+  .ro.ans{background:#e9f9ef}.ro.ans .k{color:var(--ok)}
+  .ro.miss{background:#fdeaea}.ro.miss .k{color:var(--bad)}
+  .timerbox{display:flex;align-items:center;gap:6px}
+  .timer{font-size:13px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
+  .progress-wrap{height:4px;background:var(--line);border-radius:4px;overflow:hidden;margin:-8px 0 2px}
+  .progress-bar{height:100%;background:var(--brand);border-radius:4px;width:0%;transition:width .3s}
+  .btn{border:0;border-radius:12px;padding:12px 0;font-size:14px;font-weight:600;cursor:pointer;
+    background:#eef0f3;color:var(--ink);max-width:560px}
+  @media(max-width:600px){
+    body{padding:14px 10px}
+    .topbar{padding:9px 12px;gap:6px}
+    .topbar h1{display:none}
+    .home{padding:5px 9px;font-size:12px}
+    .wrap{gap:12px}
+    .card{border-radius:12px}
+    .body{padding:14px 14px 16px}
+    .setcard{padding:12px 12px 4px}
+    .stem{font-size:14px}
+    .opt .otx .en{font-size:13px}
+    .hint{font-size:11px}
+    .next-btn{padding:12px 0;font-size:13px}
+  }
+  @media(max-width:400px){
+    .opts{gap:7px}
+    .topbar{border-radius:10px}
+  }</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <a class="home" href="../index.html">← 首頁</a>
+    <h1>新制多益 · 聽力刷題</h1>
+    <span class="score" id="score">0 / 6</span>
+    <span class="timerbox"><span class="timer" id="timer">0:00</span></span>
+    <span class="nav"><a href="index.html">目錄</a><a href="part2.html">Part 2 ›</a></span>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+  <div id="list"></div>
+  <div id="nextBtn" hidden>
+    <a class="next-btn" href="part2.html">繼續作答　Part 2　應答問題 ›</a>
+  </div>
+  <button class="btn" id="resetAll">全部重作</button>
+</div>
+
+<script src="../sync.js"></script>
+<script src="../tracker.js"></script>
+<script src="../quiz-helper.js"></script>
+<script src="data.js"></script>
+<script>
+const PART = 1;
+const TEST = 4;
+const HINT = "▶ 播放音檔，聽 (A)(B)(C)(D) 四個敘述，選出最符合照片者";
+const QS = Object.entries(QUIZ.q).filter(([,v])=>v.part===PART)
+  .map(([n,v])=>({n:+n,...v})).sort((a,b)=>a.n-b.n);
+const list = document.getElementById("list");
+const scoreEl = document.getElementById("score");
+const timerEl = document.getElementById("timer");
+const pbarEl  = document.getElementById("pbar");
+const done = {};
+
+function render(){
+  list.innerHTML = "";
+  QS.forEach(q=>{
+    const card = document.createElement("div");
+    card.className = "card";
+    const btns = q.opts.map(o=>`<button class="opt" data-q="${q.n}" data-k="${o.k}">${o.k}</button>`).join("");
+    const rev = q.opts.map(o=>`
+      <div class="ro" data-k="${o.k}">
+        <span class="k">${o.k}</span>
+        <span class="tx"><span class="en">${o.en}</span><span class="zh">${o.zh}</span></span>
+      </div>`).join("");
+    card.innerHTML = `
+      <div class="body">
+        <p class="qno">Question ${q.n}</p>
+        <img class="photo" src="q${q.n}.png" alt="Q${q.n}">
+        <audio class="audio" controls src="q${q.n}.mp3"></audio>
+        <p class="hint">${HINT}</p>
+        <div class="opts">${btns}</div>
+        <p class="result" id="r${q.n}"></p>
+        <div class="reveal" id="rev${q.n}">${rev}</div>
+      </div>`;
+    list.appendChild(card);
+  });
+}
+
+function updateScore(){
+  const _c=Object.values(done).filter(v=>v.right).length;
+  scoreEl.textContent = `${_c} / ${QS.length}`;
+  if(pbarEl) pbarEl.style.width = `${Math.round(Object.keys(done).length/QS.length*100)}%`;
+  if(Object.keys(done).length===QS.length){
+    const nb=document.getElementById("nextBtn");
+    if(nb) nb.hidden=false;
+    if(!_saveOnce){ _saveOnce=true; Tracker.save(TEST, PART, _c, QS.length); GHSync.push(); }
+  }
+}
+
+list.addEventListener("click", e=>{
+  const b = e.target.closest(".opt");
+  if(!b) return;
+  const n = +b.dataset.q;
+  if(done[n]) return;
+  Tracker.start(timerEl);
+  const q = QS.find(x=>x.n===n);
+  const picked = b.dataset.k, ans = q.ans, right = picked===ans;
+  done[n] = {picked, right};
+  Tracker.saveAns(TEST, n, picked, right);
+  const card = b.closest(".card");
+  card.querySelectorAll(".opt").forEach(o=>{
+    o.disabled = true;
+    if(o.dataset.k===ans) o.classList.add("correct");
+    else if(o.dataset.k===picked) o.classList.add("wrong");
+  });
+  const r = document.getElementById("r"+n);
+  r.textContent = right ? `✓ 答對！正解 (${ans})` : `✗ 答錯，你選 (${picked})，正解 (${ans})`;
+  r.className = "result " + (right ? "ok" : "bad");
+  const rev = document.getElementById("rev"+n);
+  rev.querySelectorAll(".ro").forEach(ro=>{
+    if(ro.dataset.k===ans) ro.classList.add("ans");
+    else if(ro.dataset.k===picked) ro.classList.add("miss");
+  });
+  rev.classList.add("show");
+  updateScore();
+});
+
+document.getElementById("resetAll").addEventListener("click", ()=>{
+  Tracker.clearQnAnss(TEST, QS.map(q=>q.n));
+  for(const k in done) delete done[k];
+  _saveOnce = false;
+  Tracker.reset(timerEl);
+  if(pbarEl) pbarEl.style.width="0%";
+  render(); updateScore();
+});
+
+render(); restoreAnswers(); if(QS.every(q=>done[q.n])) _saveOnce=true; updateScore();
+initCountdown();
+</script>
+</body>
+</html>
