@@ -43,6 +43,29 @@ function restoreAnswers() {
   QS.forEach(q => { if (saved[q.n]) applyAnswer(q.n, saved[q.n].picked, q.ans); });
 }
 
+function showTotalIfComplete() {
+  if (PART !== 4) return;
+  const parts = [1,2,3,4].map(p => {
+    try { return JSON.parse(sessionStorage.getItem('toeic_sess_t'+TEST+'_p'+p)); } catch { return null; }
+  });
+  if (parts.some(p => !p)) return;
+  const totalCorrect = parts.reduce((s,p) => s + p.correct, 0);
+  const totalTime = parts.reduce((s,p) => s + p.time, 0);
+  const pct = totalCorrect;
+  const scoreColor = pct >= 80 ? '#4ade80' : pct >= 60 ? '#fbbf24' : '#f87171';
+  const el = document.createElement('div');
+  el.style.cssText = 'background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:16px;padding:28px 24px;text-align:center';
+  el.innerHTML = `
+    <div style="font-size:12px;opacity:.75;letter-spacing:.8px;margin-bottom:10px;text-transform:uppercase">TEST ${TEST} · 完整作答成績</div>
+    <div style="font-size:48px;font-weight:800;line-height:1;margin-bottom:4px;color:${scoreColor}">${totalCorrect}</div>
+    <div style="font-size:15px;opacity:.7;margin-bottom:14px">/ 100 題</div>
+    <div style="background:rgba(255,255,255,.15);border-radius:999px;display:inline-block;padding:6px 20px;font-size:13px;font-weight:600">
+      總作答時間 ${Tracker.fmt(totalTime)}
+    </div>`;
+  const nb = document.getElementById('nextBtn');
+  if (nb) nb.insertAdjacentElement('afterend', el);
+}
+
 function initCountdown() {
   const DEFAULTS = [0, 300, 480, 1020, 840];
   let cfg; try { cfg = JSON.parse(localStorage.getItem('toeic_timer') || 'null'); } catch { cfg = null; }

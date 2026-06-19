@@ -149,7 +149,7 @@ function updateScore(){
   if(Object.keys(done).length===QS.length){
     const nb=document.getElementById("nextBtn");
     if(nb) nb.hidden=false;
-    if(!_saveOnce){ _saveOnce=true; Tracker.save(TEST, PART, _c, QS.length); GHSync.push(); }
+    if(!_saveOnce){ _saveOnce=true; Tracker.save(TEST, PART, _c, QS.length); GHSync.push(); showTotalIfComplete(); }
   }
 }
 

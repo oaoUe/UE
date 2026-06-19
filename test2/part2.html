@@ -84,7 +84,7 @@
     <h1>新制多益 · 聽力刷題</h1>
     <span class="score" id="score">0 / 25</span>
     <span class="timerbox"><span class="timer" id="timer">0:00</span></span>
-    <span class="nav"><a href="part1.html">‹ Part 1</a><a href="index.html">目錄</a></span>
+    <span class="nav"><a href="part1.html">‹ Part 1</a><a href="index.html">目錄</a><a href="part3.html">Part 3 ›</a></span>
   </div>
   <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
   <div id="list"></div>
@@ -143,7 +143,7 @@ function updateScore(){
   if(Object.keys(done).length===QS.length){
     const nb=document.getElementById("nextBtn");
     if(nb) nb.hidden=false;
-    if(!_saveOnce){ _saveOnce=true; Tracker.save(TEST, PART, _c, QS.length); GHSync.push(); }
+    if(!_saveOnce){ _saveOnce=true; Tracker.save(TEST, PART, _c, QS.length); GHSync.push(); showTotalIfComplete(); }
   }
 }
 
